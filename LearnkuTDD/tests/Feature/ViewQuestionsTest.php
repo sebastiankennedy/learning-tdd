@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Question;
 use Tests\TestCase;
 
 class ViewQuestionsTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     public function user_can_view_questions()
     {
@@ -27,7 +29,7 @@ class ViewQuestionsTest extends TestCase
         $question = Question::factory()->create();
 
         // 访问连接
-        $test = $this->get('/question/'.$question->id);
+        $test = $this->get('/questions/'.$question->id);
 
         // 那么应该看到问题的内容
         $test->assertStatus(200)
