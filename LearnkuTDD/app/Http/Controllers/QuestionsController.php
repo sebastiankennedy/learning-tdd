@@ -16,4 +16,9 @@ class QuestionsController extends Controller
     {
         return view('questions.show', compact('question'));
     }
+
+    public function store()
+    {
+
+    }
 }
