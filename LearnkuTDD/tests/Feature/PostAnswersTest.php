@@ -49,4 +49,41 @@ class PostAnswersTest extends TestCase
         $this->assertEquals(0, $question->answers()->count());
 
     }
+
+    /**
+     * @test
+     */
+    public function content_is_required_to_post_answers()
+    {
+        $this->withExceptionHandling();
+
+        $question = Question::factory()->published()->create();
+        $user = User::factory()->create();
+
+        $response = $this->post('/questions/'.$question->id.'/answers', [
+            'user_id' => $user->id,
+            'content' => null,
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHasErrors('content');
+    }
+
+    /** @test */
+    public function signed_in_user_can_post_an_answer_to_a_published_question()
+    {
+        $question = Question::factory()->published()->create();
+        $this->actingAs($user = User::factory()->create());
+
+        $response = $this->post("/questions/{$question->id}/answers", [
+            'content' => 'This is an answer.',
+        ]);
+
+        $response->assertStatus(201);
+
+        $answer = $question->answers()->where('user_id', $user->id)->first();
+        $this->assertNotNull($answer);
+
+        $this->assertEquals(1, $question->answers()->count());
+    }
 }
