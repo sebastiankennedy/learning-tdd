@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Question;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Answer;
 
 class QuestionTest extends TestCase
 {
@@ -19,7 +20,7 @@ class QuestionTest extends TestCase
         $question = Question::factory()->create();
 
         Answer::factory()->create([
-            'question_id' => $question->id
+            'question_id' => $question->id,
         ]);
 
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $question->answers());
