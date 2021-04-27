@@ -86,4 +86,12 @@ class PostAnswersTest extends TestCase
 
         $this->assertEquals(1, $question->answers()->count());
     }
+
+    public function guests_may_not_post_an_answer()
+    {
+        $this->withExceptionHandling();
+        $question = Question::factory()->published()->create();
+
+
+    }
 }
